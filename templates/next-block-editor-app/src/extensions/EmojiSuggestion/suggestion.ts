@@ -4,6 +4,8 @@ import { SuggestionKeyDownProps, SuggestionProps } from '@tiptap/suggestion'
 import tippy, { Instance } from 'tippy.js'
 
 import EmojiList from './components/EmojiList'
+import { KeyboardEvent, RefAttributes } from 'react'
+import { EmojiListProps } from './types'
 
 export const emojiSuggestion = {
   items: ({ editor, query }: { editor: Editor; query: string }) =>
@@ -18,8 +20,11 @@ export const emojiSuggestion = {
   allowSpaces: false,
 
   render: () => {
-    let component: ReactRenderer
-    let popup: Instance
+    let component: ReactRenderer<
+      { onKeyDown: (evt: SuggestionKeyDownProps) => boolean },
+      EmojiListProps & RefAttributes<SuggestionKeyDownProps>
+    >
+    let popup: ReturnType<typeof tippy>
 
     return {
       onStart: (props: SuggestionProps<any>) => {
@@ -29,7 +34,7 @@ export const emojiSuggestion = {
         })
 
         popup = tippy('body', {
-          getReferenceClientRect: props.clientRect,
+          getReferenceClientRect: props.clientRect as () => DOMRect,
           appendTo: () => document.body,
           content: component.element,
           showOnCreate: true,
@@ -43,7 +48,7 @@ export const emojiSuggestion = {
         component.updateProps(props)
 
         popup[0].setProps({
-          getReferenceClientRect: props.clientRect,
+          getReferenceClientRect: props.clientRect as () => DOMRect,
         })
       },
 
@@ -55,7 +60,7 @@ export const emojiSuggestion = {
           return true
         }
 
-        return component.ref?.onKeyDown(props)
+        return component.ref?.onKeyDown(props) ?? false
       },
 
       onExit() {

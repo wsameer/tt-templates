@@ -26,7 +26,6 @@ import { ContentItemMenu } from '../menus/ContentItemMenu'
 export const BlockEditor = ({ aiToken, ydoc, provider }: TiptapProps) => {
   const aiState = useAIState()
   const menuContainerRef = useRef(null)
-  const editorRef = useRef<PureEditorContent | null>(null)
 
   const { editor, users, characterCount, collabState, leftSidebar } = useBlockEditor({ aiToken, ydoc, provider })
 
@@ -60,7 +59,7 @@ export const BlockEditor = ({ aiToken, ydoc, provider }: TiptapProps) => {
             isSidebarOpen={leftSidebar.isOpen}
             toggleSidebar={leftSidebar.toggle}
           />
-          <EditorContent editor={editor} ref={editorRef} className="flex-1 overflow-y-auto" />
+          <EditorContent editor={editor} className="flex-1 overflow-y-auto" />
           <ContentItemMenu editor={editor} />
           <LinkMenu editor={editor} appendTo={menuContainerRef} />
           <TextMenu editor={editor} />

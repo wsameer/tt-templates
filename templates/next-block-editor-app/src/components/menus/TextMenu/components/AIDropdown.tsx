@@ -4,6 +4,7 @@ import { Surface } from '@/components/ui/Surface'
 import { Toolbar } from '@/components/ui/Toolbar'
 import { languages, tones } from '@/lib/constants'
 import * as Dropdown from '@radix-ui/react-dropdown-menu'
+import { Language } from '@tiptap-pro/extension-ai'
 import { useCallback } from 'react'
 
 export type AIDropdownProps = {
@@ -13,7 +14,7 @@ export type AIDropdownProps = {
   onMakeLonger: () => void
   onEmojify: () => void
   onTldr: () => void
-  onTranslate: (language: string) => void
+  onTranslate: (language: Language) => void
   onTone: (tone: string) => void
   onCompleteSentence: () => void
 }
@@ -30,7 +31,7 @@ export const AIDropdown = ({
   onTranslate,
 }: AIDropdownProps) => {
   const handleTone = useCallback((tone: string) => () => onTone(tone), [onTone])
-  const handleTranslate = useCallback((language: string) => () => onTranslate(language), [onTranslate])
+  const handleTranslate = useCallback((language: Language) => () => onTranslate(language), [onTranslate])
 
   return (
     <Dropdown.Root>

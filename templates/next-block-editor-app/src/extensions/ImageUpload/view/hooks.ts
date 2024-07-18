@@ -5,18 +5,21 @@ import { API } from '@/lib/api'
 export const useUploader = ({ onUpload }: { onUpload: (url: string) => void }) => {
   const [loading, setLoading] = useState(false)
 
-  const uploadFile = useCallback(async () => {
-    setLoading(true)
-    try {
-      const url = await API.uploadImage()
+  const uploadFile = useCallback(
+    async (_file?: File) => {
+      setLoading(true)
+      try {
+        const url = await API.uploadImage()
 
-      onUpload(url)
-    } catch (errPayload: any) {
-      const error = errPayload?.response?.data?.error || 'Something went wrong'
-      toast.error(error)
-    }
-    setLoading(false)
-  }, [onUpload])
+        onUpload(url)
+      } catch (errPayload: any) {
+        const error = errPayload?.response?.data?.error || 'Something went wrong'
+        toast.error(error)
+      }
+      setLoading(false)
+    },
+    [onUpload],
+  )
 
   return { loading, uploadFile }
 }

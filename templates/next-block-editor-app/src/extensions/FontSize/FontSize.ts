@@ -1,4 +1,4 @@
-import { Extension } from '@tiptap/core'
+import { Attributes, Extension } from '@tiptap/core'
 import '@tiptap/extension-text-style'
 
 declare module '@tiptap/core' {
@@ -42,7 +42,7 @@ export const FontSize = Extension.create({
               }
             },
           },
-        },
+        } as Attributes,
       },
     ]
   },
