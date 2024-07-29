@@ -1,3 +1,5 @@
+const path = require('path')
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   poweredByHeader: false,
@@ -8,7 +10,11 @@ const nextConfig = {
     // !! WARN !!
     ignoreBuildErrors: true,
   },
-  webpack(config) {
+  webpack(config, { isServer }) {
+    if (!isServer) {
+      // Ensure that all imports of 'yjs' resolve to the same instance
+      config.resolve.alias['yjs'] = path.resolve(__dirname, 'node_modules/yjs')
+    }
     config.module.rules.push({
       test: /\.svg$/,
       use: [
