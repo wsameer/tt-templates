@@ -34,33 +34,45 @@ export const useBlockEditor = ({
   provider?: TiptapCollabProvider | null | undefined
 }) => {
   const leftSidebar = useSidebar()
-  const [collabState, setCollabState] = useState<WebSocketStatus>(WebSocketStatus.Connecting)
+  const [collabState, setCollabState] = useState<WebSocketStatus>(
+    provider ? WebSocketStatus.Connecting : WebSocketStatus.Disconnected,
+  )
   const { setIsAiLoading, setAiError } = useContext(EditorContext)
 
   const editor = useEditor(
     {
+      immediatelyRender: false,
       autofocus: true,
       onCreate: ({ editor }) => {
-        provider?.on('synced', () => {
-          if (editor.isEmpty) {
-            editor.commands.setContent(initialContent)
-          }
-        })
+        if (provider) {
+          provider.on('synced', () => {
+            if (editor.isEmpty) {
+              editor.commands.setContent(initialContent)
+            }
+          })
+        } else {
+          editor.commands.setContent(initialContent)
+          editor.commands.focus('start', { scrollIntoView: true })
+        }
       },
       extensions: [
         ...ExtensionKit({
           provider,
         }),
-        Collaboration.configure({
-          document: ydoc,
-        }),
-        CollaborationCursor.configure({
-          provider,
-          user: {
-            name: randomElement(userNames),
-            color: randomElement(userColors),
-          },
-        }),
+        provider
+          ? Collaboration.configure({
+              document: ydoc,
+            })
+          : undefined,
+        provider
+          ? CollaborationCursor.configure({
+              provider,
+              user: {
+                name: randomElement(userNames),
+                color: randomElement(userColors),
+              },
+            })
+          : undefined,
         Ai.configure({
           appId: TIPTAP_AI_APP_ID,
           token: aiToken,
@@ -79,7 +91,7 @@ export const useBlockEditor = ({
             setAiError(error.message)
           },
         }),
-      ],
+      ].filter(e => !!e),
       editorProps: {
         attributes: {
           autocomplete: 'off',
