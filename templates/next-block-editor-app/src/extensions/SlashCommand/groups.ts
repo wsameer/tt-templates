@@ -135,7 +135,7 @@ export const GROUPS: Group[] = [
       {
         name: 'columns',
         label: 'Columns',
-        iconName: 'Columns',
+        iconName: 'Columns2',
         description: 'Add two column content',
         aliases: ['cols'],
         shouldBeHidden: editor => editor.isActive('columns'),
