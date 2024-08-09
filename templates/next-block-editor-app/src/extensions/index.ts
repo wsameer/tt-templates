@@ -1,7 +1,5 @@
 'use client'
 
-// TODO: File causes circular dependency issue in ESLint
-/* eslint-disable */
 export { StarterKit } from '@tiptap/starter-kit'
 export { Highlight } from '@tiptap/extension-highlight'
 export { CharacterCount } from '@tiptap/extension-character-count'
@@ -26,6 +24,9 @@ export { Collaboration } from '@tiptap/extension-collaboration'
 export { TaskItem } from '@tiptap/extension-task-item'
 export { TaskList } from '@tiptap/extension-task-list'
 export { FileHandler } from '@tiptap-pro/extension-file-handler'
+export { Details } from '@tiptap-pro/extension-details'
+export { DetailsContent } from '@tiptap-pro/extension-details-content'
+export { DetailsSummary } from '@tiptap-pro/extension-details-summary'
 
 export { Selection } from './Selection'
 export { AiWriter } from './AiWriter'
