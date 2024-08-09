@@ -38,7 +38,7 @@ export const EditorInfo = memo(({ characters, collabState, users, words }: Edito
       {collabState === 'connected' && (
         <div className="flex flex-row items-center">
           <div className="relative flex flex-row items-center ml-3">
-            {users.map((user: EditorUser) => (
+            {users.slice(0, 3).map((user: EditorUser) => (
               <div key={user.clientId} className="-ml-3">
                 <Tooltip title={user.name}>
                   <img
