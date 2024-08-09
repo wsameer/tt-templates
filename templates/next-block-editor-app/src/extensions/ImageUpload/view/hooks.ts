@@ -6,10 +6,10 @@ export const useUploader = ({ onUpload }: { onUpload: (url: string) => void }) =
   const [loading, setLoading] = useState(false)
 
   const uploadFile = useCallback(
-    async (_file?: File) => {
+    async (file: File) => {
       setLoading(true)
       try {
-        const url = await API.uploadImage()
+        const url = await API.uploadImage(file)
 
         onUpload(url)
       } catch (errPayload: any) {
