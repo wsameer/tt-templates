@@ -1,3 +1,4 @@
+import React from 'react'
 import { cn } from '@/lib/utils'
 
 export const DropdownCategoryTitle = ({ children }: { children: React.ReactNode }) => {
@@ -8,19 +9,16 @@ export const DropdownCategoryTitle = ({ children }: { children: React.ReactNode 
   )
 }
 
-export const DropdownButton = ({
-  children,
-  isActive,
-  onClick,
-  disabled,
-  className,
-}: {
-  children: React.ReactNode
-  isActive?: boolean
-  onClick?: () => void
-  disabled?: boolean
-  className?: string
-}) => {
+export const DropdownButton = React.forwardRef<
+  HTMLButtonElement,
+  {
+    children: React.ReactNode
+    isActive?: boolean
+    onClick?: () => void
+    disabled?: boolean
+    className?: string
+  }
+>(function DropdownButtonInner({ children, isActive, onClick, disabled, className }, ref) {
   const buttonClass = cn(
     'flex items-center gap-2 p-1.5 text-sm font-medium text-neutral-500 dark:text-neutral-400 text-left bg-transparent w-full rounded',
     !isActive && !disabled,
@@ -31,8 +29,8 @@ export const DropdownButton = ({
   )
 
   return (
-    <button className={buttonClass} disabled={disabled} onClick={onClick}>
+    <button className={buttonClass} disabled={disabled} onClick={onClick} ref={ref}>
       {children}
     </button>
   )
-}
+})

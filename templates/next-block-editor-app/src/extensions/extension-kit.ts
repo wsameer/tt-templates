@@ -9,7 +9,11 @@ import {
   AiImage,
   BlockquoteFigure,
   CharacterCount,
+  CodeBlock,
   Color,
+  Details,
+  DetailsContent,
+  DetailsSummary,
   Document,
   Dropcursor,
   Emoji,
@@ -45,10 +49,9 @@ import {
   TaskItem,
   TaskList,
 } from '.'
-import { CodeBlockLowlight } from '@tiptap/extension-code-block-lowlight'
+
 import { ImageUpload } from './ImageUpload'
 import { TableOfContentsNode } from './TableOfContentsNode'
-import { lowlight } from 'lowlight'
 
 interface ExtensionKitProps {
   provider?: HocuspocusProvider | null
@@ -87,10 +90,15 @@ export const ExtensionKit = ({ provider, userId, userName = 'Maxi' }: ExtensionK
     history: false,
     codeBlock: false,
   }),
-  CodeBlockLowlight.configure({
-    lowlight,
-    defaultLanguage: null,
+  Details.configure({
+    persist: true,
+    HTMLAttributes: {
+      class: 'details',
+    },
   }),
+  DetailsContent,
+  DetailsSummary,
+  CodeBlock,
   TextStyle,
   FontSize,
   FontFamily,
