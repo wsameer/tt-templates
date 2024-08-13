@@ -1,6 +1,7 @@
 import { useContext, useEffect, useMemo, useState } from 'react'
 
-import { Editor, useEditor } from '@tiptap/react'
+import { useEditor } from '@tiptap/react'
+import type { Editor } from '@tiptap/core'
 import Ai from '@tiptap-pro/extension-ai'
 import Collaboration from '@tiptap/extension-collaboration'
 import CollaborationCursor from '@tiptap/extension-collaboration-cursor'
@@ -43,16 +44,18 @@ export const useBlockEditor = ({
     {
       immediatelyRender: false,
       autofocus: true,
-      onCreate: ({ editor }) => {
-        if (provider) {
+      onCreate: ctx => {
+        if (provider && !provider.isSynced) {
           provider.on('synced', () => {
-            if (editor.isEmpty) {
-              editor.commands.setContent(initialContent)
-            }
+            setTimeout(() => {
+              if (ctx.editor.isEmpty) {
+                ctx.editor.commands.setContent(initialContent)
+              }
+            }, 0)
           })
-        } else {
-          editor.commands.setContent(initialContent)
-          editor.commands.focus('start', { scrollIntoView: true })
+        } else if (ctx.editor.isEmpty) {
+          ctx.editor.commands.setContent(initialContent)
+          ctx.editor.commands.focus('start', { scrollIntoView: true })
         }
       },
       extensions: [
