@@ -33,4 +33,17 @@
   [data-placeholder][data-suggestion] *::before {
     content: none !important;
   }
+
+  /* Details Placeholder */
+  [data-type='details'].is-editor-empty::before {
+    content: none !important;
+  }
+
+  [data-type='details'] summary.is-empty::before {
+    content: 'Enter a summary';
+  }
+
+  [data-type='detailsContent'] .is-empty::before {
+    content: 'Enter details';
+  }
 }
