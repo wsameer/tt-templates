@@ -36,7 +36,6 @@ export const BlockEditor = ({
   if (!editor || !users) {
     return null
   }
-  const displayedUsers = users.slice(0, 3)
 
   return (
     <div className="flex h-full" ref={menuContainerRef}>
@@ -45,7 +44,7 @@ export const BlockEditor = ({
         <EditorHeader
           editor={editor}
           collabState={collabState}
-          users={displayedUsers}
+          users={users}
           isSidebarOpen={leftSidebar.isOpen}
           toggleSidebar={leftSidebar.toggle}
         />

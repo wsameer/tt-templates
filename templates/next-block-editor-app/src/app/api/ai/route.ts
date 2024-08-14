@@ -1,6 +1,6 @@
 import jsonwebtoken from 'jsonwebtoken'
 
-const JWT_SECRET = false // process.env?.TIPTAP_AI_SECRET
+const JWT_SECRET = process.env?.TIPTAP_AI_SECRET
 
 export async function POST(): Promise<Response> {
   if (!JWT_SECRET) {
