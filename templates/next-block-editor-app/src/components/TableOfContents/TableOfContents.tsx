@@ -14,7 +14,7 @@ export type TableOfContentsProps = {
 export const TableOfContents = memo(({ editor, onItemClick }: TableOfContentsProps) => {
   const data = useEditorState({
     editor,
-    selector: ctx => ctx.editor.extensionStorage.tableOfContents as TableOfContentsStorage,
+    selector: ctx => ctx.editor.storage.tableOfContents as TableOfContentsStorage,
   })
 
   return (
