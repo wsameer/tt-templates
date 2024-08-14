@@ -130,7 +130,7 @@ export default function Document({ params }: { params: { room: string } }) {
     }
   }, [setProvider, collabToken, ydoc, room, hasCollab])
 
-  if (hasCollab && !provider) return
+  if ((hasCollab && !provider) || aiToken === undefined || collabToken === undefined) return
 
   const DarkModeSwitcher = createPortal(
     <Surface className="flex items-center gap-1 fixed bottom-6 right-6 z-[99999] p-1">

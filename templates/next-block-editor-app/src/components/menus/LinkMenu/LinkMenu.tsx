@@ -10,8 +10,8 @@ export const LinkMenu = ({ editor, appendTo }: MenuProps): JSX.Element => {
   const [showEdit, setShowEdit] = useState(false)
   const { link, target } = useEditorState({
     editor,
-    selector: () => {
-      const attrs = editor.getAttributes('link')
+    selector: ctx => {
+      const attrs = ctx.editor.getAttributes('link')
       return { link: attrs.href, target: attrs.target }
     },
     equalityFn: deepEql,
