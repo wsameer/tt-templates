@@ -8,4 +8,3 @@ export const Ai = AiExtension.configure({
   baseUrl: TIPTAP_AI_BASE_URL,
   autocompletion: true,
 })
-export const aiEnabled = true
