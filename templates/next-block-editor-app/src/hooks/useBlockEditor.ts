@@ -28,7 +28,7 @@ export const useBlockEditor = ({
   userId,
   userName = 'Maxi',
 }: {
-  aiToken: string
+  aiToken?: string
   ydoc: YDoc
   provider?: TiptapCollabProvider | null | undefined
   userId?: string

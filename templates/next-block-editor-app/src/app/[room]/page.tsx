@@ -43,11 +43,11 @@ const useDarkmode = () => {
 export default function Document({ params }: { params: { room: string } }) {
   const { isDarkMode, darkMode, lightMode } = useDarkmode()
   const [provider, setProvider] = useState<TiptapCollabProvider | null>(null)
-  const [collabToken, setCollabToken] = useState<string | null>(null)
-  const [aiToken, setAiToken] = useState<string | null>(null)
+  const [collabToken, setCollabToken] = useState<string | null | undefined>()
+  const [aiToken, setAiToken] = useState<string | null | undefined>()
   const searchParams = useSearchParams()
 
-  const hasCollab = parseInt(searchParams.get('noCollab') as string) !== 1
+  const hasCollab = parseInt(searchParams.get('noCollab') as string) !== 1 && collabToken !== null
 
   const { room } = params
 
@@ -67,6 +67,7 @@ export default function Document({ params }: { params: { room: string } }) {
 
       if (token === 'NONE_PROVIDED') {
         console.error('No collaboration token provided, please set TIPTAP_COLLAB_SECRET in your environment')
+        setCollabToken(null)
         return
       }
 
@@ -93,6 +94,7 @@ export default function Document({ params }: { params: { room: string } }) {
 
       if (token === 'NONE_PROVIDED') {
         console.error('No AI token provided, please set TIPTAP_AI_SECRET in your environment')
+        setAiToken(null)
         return
       }
       // set state when the data received
@@ -117,7 +119,7 @@ export default function Document({ params }: { params: { room: string } }) {
     }
   }, [setProvider, collabToken, ydoc, room, hasCollab])
 
-  if ((hasCollab && (!collabToken || !provider)) || !aiToken) return
+  if (hasCollab && !provider) return
 
   const DarkModeSwitcher = createPortal(
     <Surface className="flex items-center gap-1 fixed bottom-6 right-6 z-[99999] p-1">
@@ -134,7 +136,7 @@ export default function Document({ params }: { params: { room: string } }) {
   return (
     <>
       {DarkModeSwitcher}
-      <BlockEditor aiToken={aiToken} hasCollab={hasCollab} ydoc={ydoc} provider={provider} />
+      <BlockEditor aiToken={aiToken ?? undefined} hasCollab={hasCollab} ydoc={ydoc} provider={provider} />
     </>
   )
 }

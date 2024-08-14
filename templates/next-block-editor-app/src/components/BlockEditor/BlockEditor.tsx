@@ -11,24 +11,32 @@ import { Sidebar } from '@/components/Sidebar'
 import ImageBlockMenu from '@/extensions/ImageBlock/components/ImageBlockMenu'
 import { ColumnsMenu } from '@/extensions/MultiColumn/menus'
 import { TableColumnMenu, TableRowMenu } from '@/extensions/Table/menus'
-import { TiptapProps } from './types'
 import { EditorHeader } from './components/EditorHeader'
 import { TextMenu } from '../menus/TextMenu'
 import { ContentItemMenu } from '../menus/ContentItemMenu'
 import { useSidebar } from '@/hooks/useSidebar'
+import * as Y from 'yjs'
+import { TiptapCollabProvider } from '@hocuspocus/provider'
 
-export const BlockEditor = ({ aiToken, ydoc, provider }: TiptapProps) => {
+export const BlockEditor = ({
+  aiToken,
+  ydoc,
+  provider,
+}: {
+  aiToken?: string
+  hasCollab: boolean
+  ydoc: Y.Doc
+  provider?: TiptapCollabProvider | null | undefined
+}) => {
   const menuContainerRef = useRef(null)
 
   const leftSidebar = useSidebar()
   const { editor, users, collabState } = useBlockEditor({ aiToken, ydoc, provider })
 
-  const displayedUsers = users.slice(0, 3)
-
-  if (!editor) {
+  if (!editor || !users) {
     return null
   }
-  console.log('render')
+  const displayedUsers = users.slice(0, 3)
 
   return (
     <div className="flex h-full" ref={menuContainerRef}>
