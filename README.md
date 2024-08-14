@@ -10,6 +10,8 @@ With these templates, you can quickly bootstrap your project with a well-designe
 
 ## Installation & Usage
 
+This is not your typical setup, so please follow the instructions carefully to get started.
+
 ### 1. Clone the repository
 
 To begin, clone the tiptap-templates repository from GitHub, using the following command:
@@ -41,6 +43,9 @@ If you are not paying for Tiptap's [Content AI](https://tiptap.dev/product/conte
 ```bash
 # Convert the template to the free version
 ./convert-to-free-version.sh
+
+# This script will remove the @tiptap-pro/extension-ai from the package.json and install stubs for the missing extensions
+# AI features will be disabled and will result in errors if used
 ```
 
 ### 4. Install the project dependencies
