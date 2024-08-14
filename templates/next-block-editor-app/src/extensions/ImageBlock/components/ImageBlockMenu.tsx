@@ -1,7 +1,8 @@
-import { BubbleMenu as BaseBubbleMenu } from '@tiptap/react'
+import { BubbleMenu as BaseBubbleMenu, useEditorState } from '@tiptap/react'
 import React, { useCallback, useRef } from 'react'
 import { Instance, sticky } from 'tippy.js'
 import { v4 as uuid } from 'uuid'
+import deepEql from 'fast-deep-equal'
 
 import { Toolbar } from '@/components/ui/Toolbar'
 import { Icon } from '@/components/ui/Icon'
@@ -44,6 +45,18 @@ export const ImageBlockMenu = ({ editor, appendTo }: MenuProps): JSX.Element => 
     },
     [editor],
   )
+  const { isImageCenter, isImageLeft, isImageRight, width } = useEditorState({
+    editor,
+    selector: ctx => {
+      return {
+        isImageLeft: ctx.editor.isActive('imageBlock', { align: 'left' }),
+        isImageCenter: ctx.editor.isActive('imageBlock', { align: 'center' }),
+        isImageRight: ctx.editor.isActive('imageBlock', { align: 'right' }),
+        width: parseInt(ctx.editor.getAttributes('imageBlock')?.width || 0),
+      }
+    },
+    equalityFn: deepEql,
+  })
 
   return (
     <BaseBubbleMenu
@@ -68,29 +81,17 @@ export const ImageBlockMenu = ({ editor, appendTo }: MenuProps): JSX.Element => 
       }}
     >
       <Toolbar.Wrapper shouldShowContent={shouldShow()} ref={menuRef}>
-        <Toolbar.Button
-          tooltip="Align image left"
-          active={editor.isActive('imageBlock', { align: 'left' })}
-          onClick={onAlignImageLeft}
-        >
+        <Toolbar.Button tooltip="Align image left" active={isImageLeft} onClick={onAlignImageLeft}>
           <Icon name="AlignHorizontalDistributeStart" />
         </Toolbar.Button>
-        <Toolbar.Button
-          tooltip="Align image center"
-          active={editor.isActive('imageBlock', { align: 'center' })}
-          onClick={onAlignImageCenter}
-        >
+        <Toolbar.Button tooltip="Align image center" active={isImageCenter} onClick={onAlignImageCenter}>
           <Icon name="AlignHorizontalDistributeCenter" />
         </Toolbar.Button>
-        <Toolbar.Button
-          tooltip="Align image right"
-          active={editor.isActive('imageBlock', { align: 'right' })}
-          onClick={onAlignImageRight}
-        >
+        <Toolbar.Button tooltip="Align image right" active={isImageRight} onClick={onAlignImageRight}>
           <Icon name="AlignHorizontalDistributeEnd" />
         </Toolbar.Button>
         <Toolbar.Divider />
-        <ImageBlockWidth onChange={onWidthChange} value={parseInt(editor.getAttributes('imageBlock').width)} />
+        <ImageBlockWidth onChange={onWidthChange} value={width} />
       </Toolbar.Wrapper>
     </BaseBubbleMenu>
   )

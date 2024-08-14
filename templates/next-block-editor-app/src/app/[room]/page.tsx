@@ -12,11 +12,6 @@ import { Surface } from '@/components/ui/Surface'
 import { Toolbar } from '@/components/ui/Toolbar'
 import { Icon } from '@/components/ui/Icon'
 
-export interface AiState {
-  isAiLoading: boolean
-  aiError?: string | null
-}
-
 const useDarkmode = () => {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(
     typeof window !== 'undefined' ? window.matchMedia('(prefers-color-scheme: dark)').matches : false,
@@ -48,30 +43,41 @@ const useDarkmode = () => {
 export default function Document({ params }: { params: { room: string } }) {
   const { isDarkMode, darkMode, lightMode } = useDarkmode()
   const [provider, setProvider] = useState<TiptapCollabProvider | null>(null)
-  const [collabToken, setCollabToken] = useState<string | null>(null)
-  const [aiToken, setAiToken] = useState<string | null>(null)
+  const [collabToken, setCollabToken] = useState<string | null | undefined>()
+  const [aiToken, setAiToken] = useState<string | null | undefined>()
   const searchParams = useSearchParams()
 
-  const hasCollab = parseInt(searchParams.get('noCollab') as string) !== 1
+  const hasCollab = parseInt(searchParams?.get('noCollab') as string) !== 1 && collabToken !== null
 
   const { room } = params
 
   useEffect(() => {
     // fetch data
     const dataFetch = async () => {
-      const data = await (
-        await fetch('/api/collaboration', {
+      try {
+        const response = await fetch('/api/collaboration', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
         })
-      ).json()
 
-      const { token } = data
+        if (!response.ok) {
+          throw new Error('No collaboration token provided, please set TIPTAP_COLLAB_SECRET in your environment')
+        }
+        const data = await response.json()
 
-      // set state when the data received
-      setCollabToken(token)
+        const { token } = data
+
+        // set state when the data received
+        setCollabToken(token)
+      } catch (e) {
+        if (e instanceof Error) {
+          console.error(e.message)
+        }
+        setCollabToken(null)
+        return
+      }
     }
 
     dataFetch()
@@ -80,19 +86,30 @@ export default function Document({ params }: { params: { room: string } }) {
   useEffect(() => {
     // fetch data
     const dataFetch = async () => {
-      const data = await (
-        await fetch('/api/ai', {
+      try {
+        const response = await fetch('/api/ai', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
         })
-      ).json()
 
-      const { token } = data
+        if (!response.ok) {
+          throw new Error('No AI token provided, please set TIPTAP_AI_SECRET in your environment')
+        }
+        const data = await response.json()
 
-      // set state when the data received
-      setAiToken(token)
+        const { token } = data
+
+        // set state when the data received
+        setAiToken(token)
+      } catch (e) {
+        if (e instanceof Error) {
+          console.error(e.message)
+        }
+        setAiToken(null)
+        return
+      }
     }
 
     dataFetch()
@@ -113,7 +130,7 @@ export default function Document({ params }: { params: { room: string } }) {
     }
   }, [setProvider, collabToken, ydoc, room, hasCollab])
 
-  if ((hasCollab && (!collabToken || !provider)) || !aiToken) return
+  if (hasCollab && !provider) return
 
   const DarkModeSwitcher = createPortal(
     <Surface className="flex items-center gap-1 fixed bottom-6 right-6 z-[99999] p-1">
@@ -130,7 +147,7 @@ export default function Document({ params }: { params: { room: string } }) {
   return (
     <>
       {DarkModeSwitcher}
-      <BlockEditor aiToken={aiToken} hasCollab={hasCollab} ydoc={ydoc} provider={provider} />
+      <BlockEditor aiToken={aiToken ?? undefined} hasCollab={hasCollab} ydoc={ydoc} provider={provider} />
     </>
   )
 }

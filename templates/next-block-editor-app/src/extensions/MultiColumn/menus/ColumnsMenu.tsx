@@ -1,7 +1,8 @@
-import { BubbleMenu as BaseBubbleMenu } from '@tiptap/react'
+import { BubbleMenu as BaseBubbleMenu, useEditorState } from '@tiptap/react'
 import { useCallback } from 'react'
 import { sticky } from 'tippy.js'
 import { v4 as uuid } from 'uuid'
+import deepEql from 'fast-deep-equal'
 
 import { MenuProps } from '@/components/menus/types'
 import { getRenderContainer } from '@/lib/utils/getRenderContainer'
@@ -33,6 +34,17 @@ export const ColumnsMenu = ({ editor, appendTo }: MenuProps) => {
   const onColumnTwo = useCallback(() => {
     editor.chain().focus().setLayout(ColumnLayout.TwoColumn).run()
   }, [editor])
+  const { isColumnLeft, isColumnRight, isColumnTwo } = useEditorState({
+    editor,
+    selector: ctx => {
+      return {
+        isColumnLeft: ctx.editor.isActive('columns', { layout: ColumnLayout.SidebarLeft }),
+        isColumnRight: ctx.editor.isActive('columns', { layout: ColumnLayout.SidebarRight }),
+        isColumnTwo: ctx.editor.isActive('columns', { layout: ColumnLayout.TwoColumn }),
+      }
+    },
+    equalityFn: deepEql,
+  })
 
   return (
     <BaseBubbleMenu
@@ -52,25 +64,13 @@ export const ColumnsMenu = ({ editor, appendTo }: MenuProps) => {
       }}
     >
       <Toolbar.Wrapper>
-        <Toolbar.Button
-          tooltip="Sidebar left"
-          active={editor.isActive('columns', { layout: ColumnLayout.SidebarLeft })}
-          onClick={onColumnLeft}
-        >
+        <Toolbar.Button tooltip="Sidebar left" active={isColumnLeft} onClick={onColumnLeft}>
           <Icon name="PanelLeft" />
         </Toolbar.Button>
-        <Toolbar.Button
-          tooltip="Two columns"
-          active={editor.isActive('columns', { layout: ColumnLayout.TwoColumn })}
-          onClick={onColumnTwo}
-        >
-          <Icon name="Columns" />
+        <Toolbar.Button tooltip="Two columns" active={isColumnTwo} onClick={onColumnTwo}>
+          <Icon name="Columns2" />
         </Toolbar.Button>
-        <Toolbar.Button
-          tooltip="Sidebar right"
-          active={editor.isActive('columns', { layout: ColumnLayout.SidebarRight })}
-          onClick={onColumnRight}
-        >
+        <Toolbar.Button tooltip="Sidebar right" active={isColumnRight} onClick={onColumnRight}>
           <Icon name="PanelRight" />
         </Toolbar.Button>
       </Toolbar.Wrapper>
