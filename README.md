@@ -22,7 +22,9 @@ git clone git@github.com:ueberdosis/tiptap-templates.git
 
 ### 2. Setup the Tiptap registry
 
-Once you've cloned the repository, you'll need to setup a `.npmrc` file to authenticate with the Tiptap registry. This is necessary to access the Tiptap Pro extensions which are included in the `package.json`, if this step is skipped you will not be able to install dependencies. You can create a free account, no credit card required, at [Tiptap Cloud](https://cloud.tiptap.dev/register) to get your token.
+Once you've cloned the repository, you'll need to setup a `.npmrc` file to authenticate with the Tiptap registry. This is necessary to access the Tiptap Pro extensions which are included in the `package.json`, if this step is skipped you will not be able to install dependencies.
+
+You can create a free account, no credit card required, at [Tiptap Cloud](https://cloud.tiptap.dev/register) to get your toke [here](https://cloud.tiptap.dev/pro-extensions).
 
 ```bash
 # Create a new .npmrc file in the root of the repo
@@ -30,10 +32,13 @@ touch .npmrc
 # Add the Tiptap registry to the .npmrc file
 echo "@tiptap-pro:registry=https://registry.tiptap.dev/" >> .npmrc
 # You can retrieve your token from the Tiptap dashboard at https://cloud.tiptap.dev/pro-extensions
+# This requires a free account which can be created at https://cloud.tiptap.dev/register
 echo "//registry.tiptap.dev/:_authToken=TIPTAP_AUTH_TOKEN_HERE" >> .npmrc
 ```
 
-### 3. Convert the template to the free version (optional)
+### 3. Convert the template to the free version (required if you are on the free plan)
+
+If you are paying for Tiptap's [Content AI](https://tiptap.dev/product/content-ai) features, you can skip this step.
 
 If you are not paying for Tiptap's [Content AI](https://tiptap.dev/product/content-ai) features, you will need to disable the Content AI extension, and convert the template to the free version, run the following command:
 
