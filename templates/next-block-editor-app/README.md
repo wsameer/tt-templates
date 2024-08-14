@@ -1,35 +1,5 @@
 # Next BlockEditor App
 
-## Installation & Usage
-
-To begin, clone the tiptap-templates repository from GitHub using the following command:
-
-```bash
-git clone git@github.com:ueberdosis/tiptap-templates.git
-```
-
-This command clones the entire repository, providing access to all the Tiptap templates currently available. The block
-editor template is located in `templates/next-block-editor-app`.
-
-Proceed with the following steps:
-
-```bash
-# Duplicate the example environment file and adjust the necessary settings in the .env file
-# Ensure the inclusion of your Tiptap cloud token and application IDs in the .env file
-cp .env.example .env
-
-# Install project dependencies
-npm install
-
-# Launch the development server
-npm run dev
-
-# Access the application at http://localhost:3000
-```
-
-> [!Important]
-> If you do not have access to Tiptap's paid [Content AI](https://tiptap.dev/product/content-ai) features, you will need to remove or exclude the Content AI extension from this template. For your convenience, we have prepared the `free-version` branch that is already configured without the paid extension. This template is designed to showcase UI possibilities and should be adapted to fit your project's requirements and access to [Tiptap features](https://tiptap.dev/pricing).
-
 ## Usage Guidelines
 
 The BlockEditor template is a fully functional Next.js application, akin to Notion or Dropbox Paper, suitable as a
@@ -48,6 +18,10 @@ Key features of the template include:
 
 You can either start a fresh project from this editor or copy over the editor or parts you need to your own projects.
 Make sure to check out the [Tiptap documentation](https://tiptap.dev) for more information on how to use Tiptap.
+
+> [!Important]
+> Do note that these templates are free to access only for evaluation purposes. If you wish to use Tiptap's paid features, you will need to comply with the [Tiptap Pro License](https://tiptap.dev/pro-license). To summarize, you can use the Tiptap Pro extensions for free in development or for personal reasons, but you will need to purchase a license to use them in production or commercially.
+> All code in this repository is licensed under the [Tiptap Pro License](https://tiptap.dev/pro-license) and may not be be distributed or used in production without a valid license.
 
 ## Folder structure
 
