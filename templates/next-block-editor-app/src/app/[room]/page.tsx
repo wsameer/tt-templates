@@ -65,6 +65,10 @@ export default function Document({ params }: { params: { room: string } }) {
 
       const { token } = data
 
+      if (token === 'NONE_PROVIDED') {
+        console.error('No collaboration token provided, please set TIPTAP_COLLAB_SECRET in your environment')
+      }
+
       // set state when the data received
       setCollabToken(token)
     }
@@ -86,6 +90,9 @@ export default function Document({ params }: { params: { room: string } }) {
 
       const { token } = data
 
+      if (token === 'NONE_PROVIDED') {
+        console.error('No AI token provided, please set TIPTAP_AI_SECRET in your environment')
+      }
       // set state when the data received
       setAiToken(token)
     }
