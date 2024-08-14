@@ -31,11 +31,5 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <html className="h-full font-sans" lang="en">
-      <body className="flex flex-col h-full">
-        <main className="h-full">{children}</main>
-      </body>
-    </html>
-  )
+  return <main className="h-full">{children}</main>
 }

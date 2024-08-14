@@ -47,32 +47,37 @@ export default function Document({ params }: { params: { room: string } }) {
   const [aiToken, setAiToken] = useState<string | null | undefined>()
   const searchParams = useSearchParams()
 
-  const hasCollab = parseInt(searchParams.get('noCollab') as string) !== 1 && collabToken !== null
+  const hasCollab = parseInt(searchParams?.get('noCollab') as string) !== 1 && collabToken !== null
 
   const { room } = params
 
   useEffect(() => {
     // fetch data
     const dataFetch = async () => {
-      const data = await (
-        await fetch('/api/collaboration', {
+      try {
+        const response = await fetch('/api/collaboration', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
         })
-      ).json()
 
-      const { token } = data
+        if (!response.ok) {
+          throw new Error('No collaboration token provided, please set TIPTAP_COLLAB_SECRET in your environment')
+        }
+        const data = await response.json()
 
-      if (token === 'NONE_PROVIDED') {
-        console.error('No collaboration token provided, please set TIPTAP_COLLAB_SECRET in your environment')
+        const { token } = data
+
+        // set state when the data received
+        setCollabToken(token)
+      } catch (e) {
+        if (e instanceof Error) {
+          console.error(e.message)
+        }
         setCollabToken(null)
         return
       }
-
-      // set state when the data received
-      setCollabToken(token)
     }
 
     dataFetch()
@@ -81,24 +86,30 @@ export default function Document({ params }: { params: { room: string } }) {
   useEffect(() => {
     // fetch data
     const dataFetch = async () => {
-      const data = await (
-        await fetch('/api/ai', {
+      try {
+        const response = await fetch('/api/ai', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
         })
-      ).json()
 
-      const { token } = data
+        if (!response.ok) {
+          throw new Error('No AI token provided, please set TIPTAP_AI_SECRET in your environment')
+        }
+        const data = await response.json()
 
-      if (token === 'NONE_PROVIDED') {
-        console.error('No AI token provided, please set TIPTAP_AI_SECRET in your environment')
+        const { token } = data
+
+        // set state when the data received
+        setAiToken(token)
+      } catch (e) {
+        if (e instanceof Error) {
+          console.error(e.message)
+        }
         setAiToken(null)
         return
       }
-      // set state when the data received
-      setAiToken(token)
     }
 
     dataFetch()
