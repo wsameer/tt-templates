@@ -12,11 +12,6 @@ import { Surface } from '@/components/ui/Surface'
 import { Toolbar } from '@/components/ui/Toolbar'
 import { Icon } from '@/components/ui/Icon'
 
-export interface AiState {
-  isAiLoading: boolean
-  aiError?: string | null
-}
-
 const useDarkmode = () => {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(
     typeof window !== 'undefined' ? window.matchMedia('(prefers-color-scheme: dark)').matches : false,

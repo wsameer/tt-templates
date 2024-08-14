@@ -4,7 +4,7 @@ import { Surface } from '@/components/ui/Surface'
 import { Toolbar } from '@/components/ui/Toolbar'
 import { languages, tones } from '@/lib/constants'
 import * as Dropdown from '@radix-ui/react-dropdown-menu'
-import { Language } from '@tiptap-pro/extension-ai'
+import type { Language } from '@/extensions/Ai'
 import { useCallback } from 'react'
 
 export type AIDropdownProps = {

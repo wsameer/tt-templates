@@ -5,8 +5,6 @@ import { HocuspocusProvider } from '@hocuspocus/provider'
 import { API } from '@/lib/api'
 
 import {
-  AiWriter,
-  AiImage,
   BlockquoteFigure,
   CharacterCount,
   CodeBlock,
@@ -55,25 +53,14 @@ import { TableOfContentsNode } from './TableOfContentsNode'
 
 interface ExtensionKitProps {
   provider?: HocuspocusProvider | null
-  userId?: string
-  userName?: string
-  userColor?: string
 }
 
-export const ExtensionKit = ({ provider, userId, userName = 'Maxi' }: ExtensionKitProps) => [
+export const ExtensionKit = ({ provider }: ExtensionKitProps) => [
   Document,
   Columns,
   TaskList,
   TaskItem.configure({
     nested: true,
-  }),
-  AiWriter.configure({
-    authorId: userId,
-    authorName: userName,
-  }),
-  AiImage.configure({
-    authorId: userId,
-    authorName: userName,
   }),
   Column,
   Selection,

@@ -1,5 +1,5 @@
 import { TiptapCollabProvider } from '@hocuspocus/provider'
-import { Language } from '@tiptap-pro/extension-ai'
+import type { Language } from '@/extensions/Ai'
 import type { Doc as YDoc } from 'yjs'
 
 export interface TiptapProps {
