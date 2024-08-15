@@ -40,7 +40,7 @@ export const useBlockEditor = ({
 
   const editor = useEditor(
     {
-      immediatelyRender: false,
+      immediatelyRender: true,
       shouldRerenderOnTransaction: false,
       autofocus: true,
       onCreate: ctx => {
