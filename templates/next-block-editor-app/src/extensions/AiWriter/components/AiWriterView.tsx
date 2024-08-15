@@ -1,7 +1,8 @@
-import { Extension, NodeViewWrapper, NodeViewWrapperProps } from '@tiptap/react'
-import { useCallback, useMemo, useState } from 'react'
+import { NodeViewProps, NodeViewWrapper, useEditorState } from '@tiptap/react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import toast from 'react-hot-toast'
 import { v4 as uuid } from 'uuid'
+import deepEql from 'fast-deep-equal'
 
 import { Button } from '@/components/ui/Button'
 import { Loader } from '@/components/ui/Loader'
@@ -16,91 +17,64 @@ import * as Dropdown from '@radix-ui/react-dropdown-menu'
 import { Toolbar } from '@/components/ui/Toolbar'
 import { Surface } from '@/components/ui/Surface'
 import { DropdownButton } from '@/components/ui/Dropdown'
+import { AiStorage, tryParseToTiptapHTML } from '@/extensions/Ai/index'
 
 export interface DataProps {
   text: string
-  addHeading: boolean
   tone?: AiTone
   textUnit?: string
   textLength?: string
-  language?: string
 }
 
-export const AiWriterView = ({ editor, node, getPos, deleteNode }: NodeViewWrapperProps) => {
-  const aiOptions = editor.extensionManager.extensions.find((ext: Extension) => ext.name === 'ai').options
+// TODO rewrite this component to use the new Ai extension features
+export const AiWriterView = ({ editor, node, getPos, deleteNode }: NodeViewProps) => {
+  const { isLoading, generatedText, error } = useEditorState({
+    editor,
+    selector: ctx => {
+      const aiStorage = ctx.editor.storage.ai as AiStorage
+      return {
+        isLoading: aiStorage.state === 'loading',
+        generatedText: aiStorage.response,
+        error: aiStorage.error,
+      }
+    },
+    equalityFn: deepEql,
+  })
 
   const [data, setData] = useState<DataProps>({
     text: '',
     tone: undefined,
-    textLength: undefined,
-    addHeading: false,
-    language: undefined,
   })
   const currentTone = tones.find(t => t.value === data.tone)
-  const [previewText, setPreviewText] = useState(undefined)
-  const [isFetching, setIsFetching] = useState(false)
   const textareaId = useMemo(() => uuid(), [])
 
-  const generateText = useCallback(async () => {
-    const { text: dataText, tone, textLength, textUnit, addHeading, language } = data
-
+  const generateText = useCallback(() => {
     if (!data.text) {
       toast.error('Please enter a description')
 
       return
     }
 
-    setIsFetching(true)
+    editor.commands.aiTextPrompt({
+      text: data.text,
+      insert: false,
+      tone: data.tone,
+      stream: true,
+      format: 'rich-text',
+    })
+  }, [data.text, data.tone, editor])
 
-    const payload = {
-      text: dataText,
-      textLength: textLength,
-      textUnit: textUnit,
-      useHeading: addHeading,
-      tone,
-      language,
+  useEffect(() => {
+    if (error) {
+      toast.error(error.message)
     }
-
-    try {
-      const { baseUrl, appId, token } = aiOptions
-      const response = await fetch(`${baseUrl}/text/prompt`, {
-        method: 'POST',
-        headers: {
-          accept: 'application.json',
-          'Content-Type': 'application/json',
-          'X-App-Id': appId.trim(),
-          Authorization: `Bearer ${token.trim()}`,
-        },
-        body: JSON.stringify(payload),
-      })
-
-      const json = await response.json()
-      const text = json.response
-
-      if (!text.length) {
-        setIsFetching(false)
-
-        return
-      }
-
-      setPreviewText(text)
-
-      setIsFetching(false)
-    } catch (errPayload: any) {
-      const errorMessage = errPayload?.response?.data?.error
-      const message = errorMessage !== 'An error occurred' ? `An error has occured: ${errorMessage}` : errorMessage
-
-      setIsFetching(false)
-      toast.error(message)
-    }
-  }, [data, aiOptions])
+  }, [error])
 
   const insert = useCallback(() => {
     const from = getPos()
     const to = from + node.nodeSize
-
-    editor.chain().focus().insertContentAt({ from, to }, previewText).run()
-  }, [editor, previewText, getPos, node.nodeSize])
+    editor.chain().focus().aiAccept({ insertAt: { from, to }, append: false }).run()
+  }, [editor, getPos, node.nodeSize])
 
   const discard = useCallback(() => {
     deleteNode()
@@ -124,13 +98,12 @@ export const AiWriterView = ({ editor, node, getPos, deleteNode }: NodeViewWrapp
     <NodeViewWrapper data-drag-handle>
       <Panel noShadow className="w-full">
         <div className="flex flex-col p-1">
-          {isFetching && <Loader label="AI is now doing its job!" />}
-          {previewText && (
+          {generatedText && (
             <>
               <PanelHeadline>Preview</PanelHeadline>
               <div
                 className="bg-white dark:bg-black border-l-4 border-neutral-100 dark:border-neutral-700 text-black dark:text-white text-base max-h-[14rem] mb-4 ml-2.5 overflow-y-auto px-4 relative"
-                dangerouslySetInnerHTML={{ __html: previewText }}
+                dangerouslySetInnerHTML={{ __html: tryParseToTiptapHTML(generatedText, editor) ?? '' }}
               />
             </>
           )}
@@ -184,7 +157,7 @@ export const AiWriterView = ({ editor, node, getPos, deleteNode }: NodeViewWrapp
               </Dropdown.Root>
             </div>
             <div className="flex justify-between w-auto gap-1">
-              {previewText && (
+              {generatedText && (
                 <Button
                   variant="ghost"
                   className="text-red-500 hover:bg-red-500/10 hover:text-red-500"
@@ -194,15 +167,15 @@ export const AiWriterView = ({ editor, node, getPos, deleteNode }: NodeViewWrapp
                   Discard
                 </Button>
               )}
-              {previewText && (
-                <Button variant="ghost" onClick={insert} disabled={!previewText}>
+              {generatedText && (
+                <Button variant="ghost" onClick={insert} disabled={!generatedText}>
                   <Icon name="Check" />
                   Insert
                 </Button>
               )}
-              <Button variant="primary" onClick={generateText} style={{ whiteSpace: 'nowrap' }}>
-                {previewText ? <Icon name="Repeat" /> : <Icon name="Sparkles" />}
-                {previewText ? 'Regenerate' : 'Generate text'}
+              <Button variant="primary" onClick={generateText} style={{ whiteSpace: 'nowrap' }} disabled={isLoading}>
+                {generatedText ? <Icon name="Repeat" /> : <Icon name="Sparkles" />}
+                {generatedText ? 'Regenerate' : 'Generate text'}
               </Button>
             </div>
           </div>
