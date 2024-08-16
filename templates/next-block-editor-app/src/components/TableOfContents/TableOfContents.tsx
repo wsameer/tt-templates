@@ -5,6 +5,7 @@ import { memo } from 'react'
 import { TableOfContentsStorage } from '@tiptap-pro/extension-table-of-contents'
 import { cn } from '@/lib/utils'
 import { useEditorState } from '@tiptap/react'
+import deepEql from 'fast-deep-equal'
 
 export type TableOfContentsProps = {
   editor: CoreEditor
@@ -12,9 +13,10 @@ export type TableOfContentsProps = {
 }
 
 export const TableOfContents = memo(({ editor, onItemClick }: TableOfContentsProps) => {
-  const data = useEditorState({
+  const content = useEditorState({
     editor,
-    selector: ctx => ctx.editor.storage.tableOfContents as TableOfContentsStorage,
+    selector: ctx => (ctx.editor.storage.tableOfContents as TableOfContentsStorage).content,
+    equalityFn: deepEql,
   })
 
   return (
@@ -22,9 +24,9 @@ export const TableOfContents = memo(({ editor, onItemClick }: TableOfContentsPro
       <div className="mb-2 text-xs font-semibold uppercase text-neutral-500 dark:text-neutral-400">
         Table of contents
       </div>
-      {data && data.content.length > 0 ? (
+      {content.length > 0 ? (
         <div className="flex flex-col gap-1">
-          {data.content.map(item => (
+          {content.map(item => (
             <a
               key={item.id}
               href={`#${item.id}`}
