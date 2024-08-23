@@ -46,10 +46,12 @@ import {
   Column,
   TaskItem,
   TaskList,
+  UniqueID,
 } from '.'
 
 import { ImageUpload } from './ImageUpload'
 import { TableOfContentsNode } from './TableOfContentsNode'
+import { isChangeOrigin } from '@tiptap/extension-collaboration'
 
 interface ExtensionKitProps {
   provider?: HocuspocusProvider | null
@@ -68,6 +70,10 @@ export const ExtensionKit = ({ provider }: ExtensionKitProps) => [
     levels: [1, 2, 3, 4, 5, 6],
   }),
   HorizontalRule,
+  UniqueID.configure({
+    types: ['paragraph', 'heading', 'blockquote', 'codeBlock', 'table'],
+    filterTransaction: transaction => !isChangeOrigin(transaction),
+  }),
   StarterKit.configure({
     document: false,
     dropcursor: false,
