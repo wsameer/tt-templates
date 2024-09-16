@@ -13,13 +13,9 @@ jobs:
         uses: actions/checkout@v3
       - name: Create ZIP archive
         run: |
-          rm ./convert-to-free-version.sh
-          rm -rf ./.github
-          rm -rf ./.vscode
-          rm -rf ./.git
-          rm -rf ./templates/next-block-editor-app/extensions/Ai/AiFree.ts
-          rm -rf ./templates/next-block-editor-app/extensions/AiImage/AiImageFree.ts
-          rm -rf ./templates/next-block-editor-app/extensions/AiWriter/AiWriterFree.ts
+          rm -rf ./templates/next-block-editor-app/src/extensions/Ai/AiFree.ts
+          rm -rf ./templates/next-block-editor-app/src/extensions/AiImage/AiImageFree.ts
+          rm -rf ./templates/next-block-editor-app/src/extensions/AiWriter/AiWriterFree.ts
           cd ./templates/next-block-editor-app && zip -r ../../blockeditor-template-pro.zip ./
       - name: Create Pro release on GitHub
         uses: softprops/action-gh-release@v2
@@ -39,13 +35,9 @@ jobs:
       - name: Create ZIP archive
         run: |
           bash ./convert-to-free-version.sh
-          rm ./convert-to-free-version.sh
-          rm -rf ./.github
-          rm -rf ./.vscode
-          rm -rf ./.git
-          rm -rf ./templates/next-block-editor-app/extensions/Ai/AiFree.ts
-          rm -rf ./templates/next-block-editor-app/extensions/AiImage/AiImageFree.ts
-          rm -rf ./templates/next-block-editor-app/extensions/AiWriter/AiWriterFree.ts
+          rm -rf ./templates/next-block-editor-app/src/extensions/Ai/AiFree.ts
+          rm -rf ./templates/next-block-editor-app/src/extensions/AiImage/AiImageFree.ts
+          rm -rf ./templates/next-block-editor-app/src/extensions/AiWriter/AiWriterFree.ts
           cd ./templates/next-block-editor-app && zip -r ../../blockeditor-template-basic.zip ./
       - name: Create Basic release on GitHub
         uses: softprops/action-gh-release@v2
