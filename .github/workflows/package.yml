@@ -35,7 +35,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
       - name: Install jq
-        run: apt update && apt install jq
+        run: sudo apt update && sudo apt install jq
       - name: Create ZIP archive
         run: |
           bash ./convert-to-free-version.sh
