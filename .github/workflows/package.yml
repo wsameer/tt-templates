@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - name: Remove unnecessary files and directories
+      - name: Create ZIP archive
         run: |
           rm ./convert-to-free-version.sh
           rm -rf ./.github
@@ -20,8 +20,7 @@ jobs:
           rm -rf ./templates/next-block-editor-app/extensions/Ai/AiFree.ts
           rm -rf ./templates/next-block-editor-app/extensions/AiImage/AiImageFree.ts
           rm -rf ./templates/next-block-editor-app/extensions/AiWriter/AiWriterFree.ts
-      - name: Create ZIP archive
-        run: cd ./templates/next-block-editor-app && zip -r ../../blockeditor-template-pro.zip ./
+          cd ./templates/next-block-editor-app && zip -r ../../blockeditor-template-pro.zip ./
       - name: Create Pro release on GitHub
         uses: softprops/action-gh-release@v2
         with:
@@ -35,10 +34,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - name: Convert to free version
-        run: bash ./convert-to-free-version.sh
-      - name: Remove unnecessary files and directories
+      - name: Install jq
+        run: apt update && apt install jq
+      - name: Create ZIP archive
         run: |
+          bash ./convert-to-free-version.sh
           rm ./convert-to-free-version.sh
           rm -rf ./.github
           rm -rf ./.vscode
@@ -46,9 +46,8 @@ jobs:
           rm -rf ./templates/next-block-editor-app/extensions/Ai/AiFree.ts
           rm -rf ./templates/next-block-editor-app/extensions/AiImage/AiImageFree.ts
           rm -rf ./templates/next-block-editor-app/extensions/AiWriter/AiWriterFree.ts
-      - name: Create ZIP archive
-        run: cd ./templates/next-block-editor-app && zip -r ../../blockeditor-template-basic.zip ./
-      - name: Create Pro release on GitHub
+          cd ./templates/next-block-editor-app && zip -r ../../blockeditor-template-basic.zip ./
+      - name: Create Basic release on GitHub
         uses: softprops/action-gh-release@v2
         with:
           name: blockeditor-${{ github.ref_name }}
