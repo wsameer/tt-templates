@@ -11,56 +11,47 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - name: Copy files to temporary directory
-        run: |
-          mkdir -p /tmp/package
-          cp -r . /tmp/package
       - name: Remove unnecessary files and directories
         run: |
-          rm convert-to-free-version.sh
-          rm -rf .github
-          rm -rf .vscode
-          rm -rf .git
-          rm -rf templates/next-block-editor-app/extensions/Ai/AiFree.ts
-          rm -rf templates/next-block-editor-app/extensions/AiImage/AiImageFree.ts
-          rm -rf templates/next-block-editor-app/extensions/AiWriter/AiWriterFree.ts
+          rm ./convert-to-free-version.sh
+          rm -rf ./.github
+          rm -rf ./.vscode
+          rm -rf ./.git
+          rm -rf ./templates/next-block-editor-app/extensions/Ai/AiFree.ts
+          rm -rf ./templates/next-block-editor-app/extensions/AiImage/AiImageFree.ts
+          rm -rf ./templates/next-block-editor-app/extensions/AiWriter/AiWriterFree.ts
       - name: Create ZIP archive
-        run: zip -r /tmp/blockeditor-template-pro.zip /tmp/package/templates/next-block-editor-app
+        run: cd ./templates/next-block-editor-app && zip -r blockeditor-template-pro.zip
       - name: Create Pro release on GitHub
         uses: softprops/action-gh-release@v2
         with:
           name: blockeditor-${{ github.ref_name }}
           generate_release_notes: true
           make_latest: true
-          files: /tmp/blockeditor-template-pro.zip
+          files: blockeditor-template-pro.zip
   package_basic:
     name: Release Basic version
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - name: Copy files to temporary directory
-        run: |
-          mkdir -p /tmp/package
-          cp -r . /tmp/package
       - name: Convert to free version
-        run: |
-          bash /tmp/package/convert-to-free-version.sh
+        run: bash ./convert-to-free-version.sh
       - name: Remove unnecessary files and directories
         run: |
-          rm convert-to-free-version.sh
-          rm -rf .github
-          rm -rf .vscode
-          rm -rf .git
-          rm -rf templates/next-block-editor-app/extensions/Ai/AiFree.ts
-          rm -rf templates/next-block-editor-app/extensions/AiImage/AiImageFree.ts
-          rm -rf templates/next-block-editor-app/extensions/AiWriter/AiWriterFree.ts
+          rm ./convert-to-free-version.sh
+          rm -rf ./.github
+          rm -rf ./.vscode
+          rm -rf ./.git
+          rm -rf ./templates/next-block-editor-app/extensions/Ai/AiFree.ts
+          rm -rf ./templates/next-block-editor-app/extensions/AiImage/AiImageFree.ts
+          rm -rf ./templates/next-block-editor-app/extensions/AiWriter/AiWriterFree.ts
       - name: Create ZIP archive
-        run: zip -r /tmp/blockeditor-template-basic.zip /tmp/package/templates/next-block-editor-app
+        run: cd ./templates/next-block-editor-app && zip -r blockeditor-template-basic.zip
       - name: Create Pro release on GitHub
         uses: softprops/action-gh-release@v2
         with:
           name: blockeditor-${{ github.ref_name }}
           generate_release_notes: true
           make_latest: false
-          files: /tmp/blockeditor-template-basic.zip
+          files: blockeditor-template-basic.zip
