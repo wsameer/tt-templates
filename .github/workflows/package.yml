@@ -25,14 +25,14 @@ jobs:
           rm -rf templates/next-block-editor-app/extensions/AiImage/AiImageFree.ts
           rm -rf templates/next-block-editor-app/extensions/AiWriter/AiWriterFree.ts
       - name: Create ZIP archive
-        run: zip -r /tmp/template.zip /tmp/package
+        run: zip -r /tmp/blockeditor-template-pro.zip /tmp/package
       - name: Create Pro release on GitHub
         uses: softprops/action-gh-release@v2
         with:
-          name: ${{ github.ref_name }}-pro
+          name: blockeditor-pro-${{ github.ref_name }}
           generate_release_notes: true
           make_latest: true
-          files: /tmp/template.zip
+          files: /tmp/blockeditor-template-pro.zip
   package_basic:
     name: Release Basic version
     runs-on: ubuntu-latest
@@ -56,11 +56,11 @@ jobs:
           rm -rf templates/next-block-editor-app/extensions/AiImage/AiImageFree.ts
           rm -rf templates/next-block-editor-app/extensions/AiWriter/AiWriterFree.ts
       - name: Create ZIP archive
-        run: zip -r /tmp/template.zip /tmp/package
+        run: zip -r /tmp/blockeditor-template-basic.zip /tmp/package
       - name: Create Pro release on GitHub
         uses: softprops/action-gh-release@v2
         with:
-          name: ${{ github.ref_name }}-basic
+          name: blockeditor-basic-${{ github.ref_name }}
           generate_release_notes: true
           make_latest: false
-          files: /tmp/template.zip
+          files: /tmp/blockeditor-template-basic.zip
