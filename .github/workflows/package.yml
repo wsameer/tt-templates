@@ -21,8 +21,10 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           name: blockeditor-${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}-pro
           generate_release_notes: true
           make_latest: true
+          fail_on_unmatched_files: true
           files: blockeditor-template-pro.zip
   package_basic:
     name: Release Basic version
@@ -43,6 +45,8 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           name: blockeditor-${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}-basic
           generate_release_notes: true
           make_latest: false
+          fail_on_unmatched_files: true
           files: blockeditor-template-basic.zip
