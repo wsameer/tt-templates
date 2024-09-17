@@ -1,4 +1,4 @@
-name: Package release on tag push
+name: Pack blockeditor template
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   package_pro:
-    name: Release Pro version
+    name: Pack pro version of blockeditor
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -27,7 +27,7 @@ jobs:
           fail_on_unmatched_files: true
           files: blockeditor-template-pro.zip
   package_basic:
-    name: Release Basic version
+    name: Pack basic version of blockeditor
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
