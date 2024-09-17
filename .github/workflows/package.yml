@@ -21,7 +21,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           name: blockeditor-${{ github.ref_name }}
-          tag_name: ${{ github.ref_name }}-pro
+          tag_name: ${{ github.ref_name }}-blockeditor
           generate_release_notes: true
           make_latest: true
           fail_on_unmatched_files: true
@@ -45,7 +45,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           name: blockeditor-${{ github.ref_name }}
-          tag_name: ${{ github.ref_name }}-basic
+          tag_name: ${{ github.ref_name }}-blockeditor
           generate_release_notes: true
           make_latest: false
           fail_on_unmatched_files: true
