@@ -2,7 +2,6 @@ import { BubbleMenu as BaseBubbleMenu, useEditorState } from '@tiptap/react'
 import { useCallback } from 'react'
 import { sticky } from 'tippy.js'
 import { v4 as uuid } from 'uuid'
-import deepEql from 'fast-deep-equal'
 
 import { MenuProps } from '@/components/menus/types'
 import { getRenderContainer } from '@/lib/utils/getRenderContainer'
@@ -43,7 +42,6 @@ export const ColumnsMenu = ({ editor, appendTo }: MenuProps) => {
         isColumnTwo: ctx.editor.isActive('columns', { layout: ColumnLayout.TwoColumn }),
       }
     },
-    equalityFn: deepEql,
   })
 
   return (

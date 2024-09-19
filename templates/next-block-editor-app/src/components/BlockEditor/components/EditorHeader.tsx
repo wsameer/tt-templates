@@ -5,7 +5,6 @@ import { WebSocketStatus } from '@hocuspocus/provider'
 import { Toolbar } from '@/components/ui/Toolbar'
 import { Editor } from '@tiptap/core'
 import { useEditorState } from '@tiptap/react'
-import deepEqual from 'fast-deep-equal'
 
 export type EditorHeaderProps = {
   isSidebarOpen?: boolean
@@ -22,7 +21,6 @@ export const EditorHeader = ({ editor, collabState, users, isSidebarOpen, toggle
       const { characters, words } = ctx.editor?.storage.characterCount || { characters: () => 0, words: () => 0 }
       return { characters: characters(), words: words() }
     },
-    equalityFn: deepEqual,
   })
 
   return (

@@ -1,12 +1,10 @@
-import { useMemo } from 'react'
-import deepEql from 'fast-deep-equal'
 import { Editor, useEditorState } from '@tiptap/react'
 import { ContentPickerOptions } from '../components/ContentTypePicker'
 
 export const useTextmenuContentTypes = (editor: Editor) => {
   return useEditorState({
     editor,
-    selector: ctx => [
+    selector: (ctx): ContentPickerOptions => [
       {
         type: 'category',
         label: 'Hierarchy',
@@ -88,6 +86,5 @@ export const useTextmenuContentTypes = (editor: Editor) => {
         type: 'option',
       },
     ],
-    equalityFn: deepEql,
   })
 }

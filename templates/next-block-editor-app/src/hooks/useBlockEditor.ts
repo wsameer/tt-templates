@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { useEditor, useEditorState } from '@tiptap/react'
-import deepEqual from 'fast-deep-equal'
 import type { AnyExtension, Editor } from '@tiptap/core'
 import Collaboration from '@tiptap/extension-collaboration'
 import CollaborationCursor from '@tiptap/extension-collaboration-cursor'
@@ -116,7 +115,6 @@ export const useBlockEditor = ({
         return { ...user, initials: initials.length ? initials : '?' }
       })
     },
-    equalityFn: deepEqual,
   })
 
   useEffect(() => {

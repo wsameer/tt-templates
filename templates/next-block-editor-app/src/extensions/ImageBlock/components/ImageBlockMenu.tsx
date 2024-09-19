@@ -2,7 +2,6 @@ import { BubbleMenu as BaseBubbleMenu, useEditorState } from '@tiptap/react'
 import React, { useCallback, useRef } from 'react'
 import { Instance, sticky } from 'tippy.js'
 import { v4 as uuid } from 'uuid'
-import deepEql from 'fast-deep-equal'
 
 import { Toolbar } from '@/components/ui/Toolbar'
 import { Icon } from '@/components/ui/Icon'
@@ -55,7 +54,6 @@ export const ImageBlockMenu = ({ editor, appendTo }: MenuProps): JSX.Element => 
         width: parseInt(ctx.editor.getAttributes('imageBlock')?.width || 0),
       }
     },
-    equalityFn: deepEql,
   })
 
   return (

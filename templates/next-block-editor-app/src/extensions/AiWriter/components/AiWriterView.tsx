@@ -2,10 +2,8 @@ import { NodeViewProps, NodeViewWrapper, useEditorState } from '@tiptap/react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import toast from 'react-hot-toast'
 import { v4 as uuid } from 'uuid'
-import deepEql from 'fast-deep-equal'
 
 import { Button } from '@/components/ui/Button'
-import { Loader } from '@/components/ui/Loader'
 import { Panel, PanelHeadline } from '@/components/ui/Panel'
 import { Textarea } from '@/components/ui/Textarea'
 import { Icon } from '@/components/ui/Icon'
@@ -38,7 +36,6 @@ export const AiWriterView = ({ editor, node, getPos, deleteNode }: NodeViewProps
         error: aiStorage.error,
       }
     },
-    equalityFn: deepEql,
   })
 
   const [data, setData] = useState<DataProps>({

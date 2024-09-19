@@ -5,7 +5,6 @@ import { memo } from 'react'
 import { TableOfContentsStorage } from '@tiptap-pro/extension-table-of-contents'
 import { cn } from '@/lib/utils'
 import { useEditorState } from '@tiptap/react'
-import deepEql from 'fast-deep-equal'
 
 export type TableOfContentsProps = {
   editor: CoreEditor
@@ -16,7 +15,6 @@ export const TableOfContents = memo(({ editor, onItemClick }: TableOfContentsPro
   const content = useEditorState({
     editor,
     selector: ctx => (ctx.editor.storage.tableOfContents as TableOfContentsStorage).content,
-    equalityFn: deepEql,
   })
 
   return (

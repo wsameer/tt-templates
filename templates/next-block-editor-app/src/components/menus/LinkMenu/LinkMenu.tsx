@@ -1,5 +1,4 @@
 import React, { useCallback, useState } from 'react'
-import deepEql from 'fast-deep-equal'
 import { BubbleMenu as BaseBubbleMenu, useEditorState } from '@tiptap/react'
 
 import { MenuProps } from '../types'
@@ -14,7 +13,6 @@ export const LinkMenu = ({ editor, appendTo }: MenuProps): JSX.Element => {
       const attrs = ctx.editor.getAttributes('link')
       return { link: attrs.href, target: attrs.target }
     },
-    equalityFn: deepEql,
   })
 
   const shouldShow = useCallback(() => {
