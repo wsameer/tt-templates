@@ -22,7 +22,7 @@ export const emojiSuggestion = {
   render: () => {
     let component: ReactRenderer<
       { onKeyDown: (evt: SuggestionKeyDownProps) => boolean },
-      EmojiListProps & RefAttributes<SuggestionKeyDownProps>
+      EmojiListProps & RefAttributes<{ onKeyDown: (evt: SuggestionKeyDownProps) => boolean }>
     >
     let popup: ReturnType<typeof tippy>
 
