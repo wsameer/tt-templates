@@ -2,12 +2,12 @@
   @apply caret-black dark:caret-white outline-0 pr-8 pl-20 py-16 z-0 lg:pl-8 lg:pr-8 mx-auto max-w-2xl;
 
   .selection {
-    @apply inline-block;
+    @apply inline;
   }
 
   .selection,
   *::selection {
-    @apply bg-black/10 dark:bg-white/20 inline-block;
+    @apply bg-black/10 dark:bg-white/20 inline;
   }
 
   & > .react-renderer {
