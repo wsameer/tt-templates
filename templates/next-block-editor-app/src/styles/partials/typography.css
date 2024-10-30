@@ -85,4 +85,15 @@
       @apply dark:border-white/20 dark:bg-white/80;
     }
   }
+
+  [data-type='emoji'] {
+    display: inline-block;
+
+    img {
+      width: 1em;
+      height: 1em;
+      object-fit: cover;
+      display: block;
+    }
+  }
 }
