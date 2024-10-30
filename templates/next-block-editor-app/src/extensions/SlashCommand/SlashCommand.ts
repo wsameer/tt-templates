@@ -146,8 +146,6 @@ export const SlashCommand = Extension.create({
                   yPos = rect.y - diff
                 }
 
-                // Account for when the editor is bound inside a container that doesn't go all the way to the edge of the screen
-                const editorXOffset = editorNode.getBoundingClientRect().x
                 return new DOMRect(rect.x, yPos, rect.width, rect.height)
               }
 
@@ -186,8 +184,14 @@ export const SlashCommand = Extension.create({
                   return props.editor.storage[extensionName].rect
                 }
 
-                // Account for when the editor is bound inside a container that doesn't go all the way to the edge of the screen
-                return new DOMRect(rect.x, rect.y, rect.width, rect.height)
+                let yPos = rect.y
+
+                if (rect.top + component.element.offsetHeight + 40 > window.innerHeight) {
+                  const diff = rect.top + component.element.offsetHeight - window.innerHeight + 40
+                  yPos = rect.y - diff
+                }
+
+                return new DOMRect(rect.x, yPos, rect.width, rect.height)
               }
 
               let scrollHandler = () => {
