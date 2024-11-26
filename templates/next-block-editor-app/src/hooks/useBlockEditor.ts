@@ -28,7 +28,7 @@ export const useBlockEditor = ({
   userName = 'Maxi',
 }: {
   aiToken?: string
-  ydoc: YDoc
+  ydoc: YDoc | null
   provider?: TiptapCollabProvider | null | undefined
   userId?: string
   userName?: string
@@ -60,7 +60,7 @@ export const useBlockEditor = ({
         ...ExtensionKit({
           provider,
         }),
-        provider
+        provider && ydoc
           ? Collaboration.configure({
               document: ydoc,
             })

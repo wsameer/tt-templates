@@ -24,8 +24,7 @@ export const BlockEditor = ({
   provider,
 }: {
   aiToken?: string
-  hasCollab: boolean
-  ydoc: Y.Doc
+  ydoc: Y.Doc | null
   provider?: TiptapCollabProvider | null | undefined
 }) => {
   const menuContainerRef = useRef(null)
