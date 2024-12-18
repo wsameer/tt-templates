@@ -10,9 +10,10 @@ export type LinkPreviewPanelProps = {
 }
 
 export const LinkPreviewPanel = ({ onClear, onEdit, url }: LinkPreviewPanelProps) => {
+  const sanitizedLink = url.startsWith('javascript:') ? '' : url
   return (
     <Surface className="flex items-center gap-2 p-2">
-      <a href={url} target="_blank" rel="noopener noreferrer" className="text-sm underline break-all">
+      <a href={sanitizedLink} target="_blank" rel="noopener noreferrer" className="text-sm underline break-all">
         {url}
       </a>
       <Toolbar.Divider />
