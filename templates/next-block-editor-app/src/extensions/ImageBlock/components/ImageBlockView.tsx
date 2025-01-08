@@ -33,7 +33,7 @@ export const ImageBlockView = (props: ImageBlockViewProps) => {
 
   return (
     <NodeViewWrapper>
-      <div className={wrapperClassName} style={{ width: node.attrs.width }}>
+      <div className={wrapperClassName} style={{ width: node.attrs.width }} data-drag-handle>
         <div contentEditable={false} ref={imageWrapperRef}>
           <img className="block" src={src} alt="" onClick={onClick} />
         </div>

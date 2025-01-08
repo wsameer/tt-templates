@@ -24,6 +24,8 @@ export const ImageBlock = Image.extend({
 
   isolating: true,
 
+  draggable: true,
+
   addAttributes() {
     return {
       src: {
