@@ -1,5 +1,5 @@
 import { EditorContent } from '@tiptap/react'
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 
 import { LinkMenu } from '@/components/menus'
 
@@ -27,10 +27,18 @@ export const BlockEditor = ({
   ydoc: Y.Doc | null
   provider?: TiptapCollabProvider | null | undefined
 }) => {
+  const [isEditable, setIsEditable] = useState(true)
   const menuContainerRef = useRef(null)
 
   const leftSidebar = useSidebar()
-  const { editor, users, collabState } = useBlockEditor({ aiToken, ydoc, provider })
+  const { editor, users, collabState } = useBlockEditor({
+    aiToken,
+    ydoc,
+    provider,
+    onTransaction({ editor: currentEditor }) {
+      setIsEditable(currentEditor.isEditable)
+    },
+  })
 
   if (!editor || !users) {
     return null
@@ -48,7 +56,7 @@ export const BlockEditor = ({
           toggleSidebar={leftSidebar.toggle}
         />
         <EditorContent editor={editor} className="flex-1 overflow-y-auto" />
-        <ContentItemMenu editor={editor} />
+        <ContentItemMenu editor={editor} isEditable={isEditable} />
         <LinkMenu editor={editor} appendTo={menuContainerRef} />
         <TextMenu editor={editor} />
         <ColumnsMenu editor={editor} appendTo={menuContainerRef} />
