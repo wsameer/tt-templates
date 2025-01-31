@@ -67,12 +67,12 @@ export const TableCell = Node.create<TableCellOptions>({
   },
 
   addProseMirrorPlugins() {
-    const { isEditable } = this.editor
-
     return [
       new Plugin({
         props: {
           decorations: state => {
+            const { isEditable } = this.editor
+
             if (!isEditable) {
               return DecorationSet.empty
             }

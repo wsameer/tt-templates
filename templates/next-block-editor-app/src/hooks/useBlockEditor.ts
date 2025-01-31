@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useEditor, useEditorState } from '@tiptap/react'
-import type { AnyExtension, Editor } from '@tiptap/core'
+import type { AnyExtension, Editor, EditorOptions } from '@tiptap/core'
 import Collaboration from '@tiptap/extension-collaboration'
 import CollaborationCursor from '@tiptap/extension-collaboration-cursor'
 import { TiptapCollabProvider, WebSocketStatus } from '@hocuspocus/provider'
@@ -26,19 +26,21 @@ export const useBlockEditor = ({
   provider,
   userId,
   userName = 'Maxi',
+  ...editorOptions
 }: {
   aiToken?: string
   ydoc: YDoc | null
   provider?: TiptapCollabProvider | null | undefined
   userId?: string
   userName?: string
-}) => {
+} & Partial<Omit<EditorOptions, 'extensions'>>) => {
   const [collabState, setCollabState] = useState<WebSocketStatus>(
     provider ? WebSocketStatus.Connecting : WebSocketStatus.Disconnected,
   )
 
   const editor = useEditor(
     {
+      ...editorOptions,
       immediatelyRender: true,
       shouldRerenderOnTransaction: false,
       autofocus: true,
