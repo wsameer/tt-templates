@@ -3,7 +3,7 @@ import { Toolbar } from '@/components/ui/Toolbar'
 import { useTextmenuCommands } from './hooks/useTextmenuCommands'
 import { useTextmenuStates } from './hooks/useTextmenuStates'
 import { BubbleMenu, Editor } from '@tiptap/react'
-import { memo } from 'react'
+import { memo, useEffect, useState } from 'react'
 import * as Popover from '@radix-ui/react-popover'
 import { Surface } from '@/components/ui/Surface'
 import { ColorPicker } from '@/components/panels'
@@ -27,12 +27,39 @@ export type TextMenuProps = {
 }
 
 export const TextMenu = ({ editor }: TextMenuProps) => {
+  const [selecting, setSelecting] = useState(false)
   const commands = useTextmenuCommands(editor)
   const states = useTextmenuStates(editor)
   const blockOptions = useTextmenuContentTypes(editor)
 
+  useEffect(() => {
+    const controller = new AbortController()
+    let selectionTimeout: number
+
+    document.addEventListener(
+      'selectionchange',
+      () => {
+        setSelecting(true)
+
+        if (selectionTimeout) {
+          window.clearTimeout(selectionTimeout)
+        }
+
+        selectionTimeout = window.setTimeout(() => {
+          setSelecting(false)
+        }, 500)
+      },
+      { signal: controller.signal },
+    )
+
+    return () => {
+      controller.abort()
+    }
+  }, [])
+
   return (
     <BubbleMenu
+      className={selecting ? 'hidden' : ''}
       tippyOptions={{
         popperOptions: {
           placement: 'top-start',
@@ -52,12 +79,13 @@ export const TextMenu = ({ editor }: TextMenuProps) => {
             },
           ],
         },
+        offset: [0, 8],
         maxWidth: 'calc(100vw - 16px)',
       }}
       editor={editor}
       pluginKey="textMenu"
       shouldShow={states.shouldShow}
-      updateDelay={100}
+      updateDelay={0}
     >
       <Toolbar.Wrapper>
         <AIDropdown
