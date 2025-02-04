@@ -16,7 +16,7 @@
   }
 
   /* Default Placeholder */
-  & > .is-editor-empty::before {
+  & > .is-editor-empty:first-child:last-child::before {
     content: 'Click here to start writing …';
   }
 
