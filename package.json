@@ -12,7 +12,10 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "Nick the Sick",
+  "author": {
+    "name": "Tiptap GmbH",
+    "url": "https://tiptap.dev"
+  },
   "license": "SEE LICENSE IN LICENSE.md",
   "dependencies": {}
 }
