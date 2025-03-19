@@ -38,7 +38,13 @@ export const TextMenu = ({ editor }: TextMenuProps) => {
 
     document.addEventListener(
       'selectionchange',
-      () => {
+      e => {
+        const selection = window.getSelection()
+
+        if (!selection?.anchorNode || !editor.view.dom.contains(selection.anchorNode)) {
+          return
+        }
+
         setSelecting(true)
 
         if (selectionTimeout) {
@@ -55,7 +61,7 @@ export const TextMenu = ({ editor }: TextMenuProps) => {
     return () => {
       controller.abort()
     }
-  }, [])
+  }, [editor])
 
   return (
     <BubbleMenu
