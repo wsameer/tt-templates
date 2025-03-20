@@ -36,30 +36,22 @@ export const TextMenu = ({ editor }: TextMenuProps) => {
     const controller = new AbortController()
     let selectionTimeout: number
 
-    document.addEventListener(
-      'selectionchange',
-      e => {
-        const selection = window.getSelection()
+    const onSelectionChange = () => {
+      setSelecting(true)
 
-        if (!selection?.anchorNode || !editor.view.dom.contains(selection.anchorNode)) {
-          return
-        }
+      if (selectionTimeout) {
+        window.clearTimeout(selectionTimeout)
+      }
 
-        setSelecting(true)
+      selectionTimeout = window.setTimeout(() => {
+        setSelecting(false)
+      }, 500)
+    }
 
-        if (selectionTimeout) {
-          window.clearTimeout(selectionTimeout)
-        }
-
-        selectionTimeout = window.setTimeout(() => {
-          setSelecting(false)
-        }, 500)
-      },
-      { signal: controller.signal },
-    )
+    editor.on('selectionUpdate', onSelectionChange)
 
     return () => {
-      controller.abort()
+      editor.off('selectionUpdate', onSelectionChange)
     }
   }, [editor])
 
