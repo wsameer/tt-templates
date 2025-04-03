@@ -12,6 +12,7 @@ import { Surface } from '@/components/ui/Surface'
 import { Toolbar } from '@/components/ui/Toolbar'
 import { Icon } from '@/components/ui/Icon'
 import { useCollaboration } from '@/hooks/useCollaboration'
+import { ClickToComponent } from 'click-to-react-component'
 
 const useDarkmode = () => {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(
@@ -99,7 +100,8 @@ export default function Document({ params }: { params: { room: string } }) {
   return (
     <>
       {DarkModeSwitcher}
-      <BlockEditor aiToken={aiToken ?? undefined} ydoc={providerState.yDoc} provider={providerState.provider} />
+      <ClickToComponent />
+      <BlockEditor aiToken={undefined} ydoc={providerState.yDoc} provider={providerState.provider} />
     </>
   )
 }

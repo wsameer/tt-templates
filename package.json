@@ -17,5 +17,8 @@
     "url": "https://tiptap.dev"
   },
   "license": "SEE LICENSE IN LICENSE.md",
-  "dependencies": {}
+  "dependencies": {
+    "@tiptap-pro/extension-unique-id": "^2.17.6",
+    "click-to-react-component": "^1.1.2"
+  }
 }
